@@ -34,6 +34,12 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/private'),
             'serve' => false,
+            // PHP-FPM and the scheduled cleanup share the www-data group.
+            // Documents stay outside public/ while both processes can remove expired files.
+            'permissions' => [
+                'file' => ['public' => 0644, 'private' => 0660],
+                'dir' => ['public' => 0755, 'private' => 0770],
+            ],
             'throw' => false,
             'report' => false,
         ],

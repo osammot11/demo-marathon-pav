@@ -29,8 +29,10 @@ class CleanupDemos extends Command
                     $paths = $order->tickets->pluck('medical_certificate_path')
                         ->filter(fn ($path) => is_string($path) && str_starts_with($path, 'demo-documents/'.$slug.'/'))
                         ->all();
+                    if ($paths && ! Storage::disk('local')->delete($paths)) {
+                        throw new \RuntimeException('Could not delete a private document for demo '.$slug.'.');
+                    }
                     $order->delete();
-                    if ($paths) Storage::disk('local')->delete($paths);
                     $removed++;
                 }
             });

@@ -82,8 +82,15 @@ class DemoCheckoutController extends Controller
         abort_if($price < 0.50, 422, 'Test payments must be at least EUR 0.50.');
         $certificatePath = null;
         if ($request->hasFile('medical_certificate')) {
+            $directory = 'demo-documents/'.$site['slug'];
+            $disk = Storage::disk('local');
+            $disk->makeDirectory('demo-documents');
+            $disk->setVisibility('demo-documents', 'private');
+            $disk->makeDirectory($directory);
+            $disk->setVisibility($directory, 'private');
             $certificatePath = $request->file('medical_certificate')->store('demo-documents/'.$site['slug'], 'local');
             if (! $certificatePath) return back()->withInput()->withErrors(['medical_certificate' => 'The file could not be saved.']);
+            $disk->setVisibility($certificatePath, 'private');
         }
 
         try {
