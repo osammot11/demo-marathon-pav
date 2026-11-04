@@ -44,6 +44,14 @@
                 <label class="check-line"><input type="checkbox" name="medical_certificate_attestation" value="1" required @checked(old('medical_certificate_attestation'))><span>{{ __($translationKey.'reg_medical_attestation') }}</span></label>
             </div>
         @endif
+        @if(data_get($registration, 'shuttle.enabled'))
+            <fieldset class="shuttle-choice">
+                <legend>{{ __($translationKey.'reg_shuttle_title') }}</legend>
+                <p>{{ __($translationKey.'reg_shuttle_intro') }}</p>
+                <label><input type="radio" name="shuttle_needed" value="1" required @checked(old('shuttle_needed', '1') === '1')> {{ __($translationKey.'reg_shuttle_yes') }}</label>
+                <label><input type="radio" name="shuttle_needed" value="0" required @checked(old('shuttle_needed') === '0')> {{ __($translationKey.'reg_shuttle_no') }}</label>
+            </fieldset>
+        @endif
     </fieldset>
     <div class="registration-fact"><span>{{ __($translationKey.'reg_base_price') }}</span><strong>€ {{ number_format($registrationPrice ?? 0, 2, ',', '.') }}</strong></div>
     @if($hasMembership && $nonMemberSurcharge > 0)

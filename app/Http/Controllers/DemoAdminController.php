@@ -26,11 +26,24 @@ class DemoAdminController extends Controller
         $discounts = DemoDiscountCode::where('demo_slug', $site['slug'])->orderBy('code')->get();
         $prices = [];
         foreach ($site['races'] as $race => $_) $prices[$race] = $this->registry->price($site, $race);
+        $operations = data_get($site, 'operations', []);
+        $operationalCounts = [];
+        if ($operations) {
+            $base = Ticket::whereHas('order', fn ($q) => $q->where('demo_slug', $site['slug']));
+            $operationalCounts = [
+                'paid' => Order::where('status', 'paid')->count(),
+                'documents_pending' => (clone $base)->where('eligibility_status', 'pending_review')->count(),
+                'shuttle_requested' => (clone $base)->where('shuttle_needed', true)->count(),
+                'shuttle_assigned' => (clone $base)->whereNotNull('shuttle_assignment')->count(),
+                'bib_collected' => (clone $base)->whereNotNull('bib_collected_at')->count(),
+            ];
+        }
 
         return view('demo.admin.dashboard', [
             'demos' => $this->registry->all(), 'site' => $site,
             'tickets' => $tickets, 'discounts' => $discounts, 'prices' => $prices,
             'totalTickets' => Ticket::whereHas('order', fn ($q) => $q->where('demo_slug', $site['slug']))->count(),
+            'operations' => $operations, 'operationalCounts' => $operationalCounts,
         ]);
     }
 
@@ -44,13 +57,45 @@ class DemoAdminController extends Controller
     {
         $site = $this->site($request);
         $record = $this->ticket($site, $ticket);
-        $validated = $request->validate([
+        $rules = [
             'first_name' => 'required|string|max:255', 'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255', 'phone' => 'nullable|string|max:30',
             'membership_number' => 'nullable|string|max:100',
             'medical_certificate_expires_on' => 'nullable|date',
-        ]);
-        $record->update($validated);
+        ];
+        if (data_get($site, 'operations.shuttle')) {
+            $rules += [
+                'shuttle_needed' => 'required|boolean',
+                'shuttle_assignment' => 'nullable|string|max:100',
+                'shuttle_boarded' => 'required|boolean',
+            ];
+        }
+        if (data_get($site, 'operations.bib_pickup')) {
+            $rules += [
+                'bib_number' => ['nullable', 'string', 'max:30', Rule::unique('tickets', 'bib_number')->where('demo_slug', $site['slug'])->ignore($record->id)],
+                'bib_collected' => 'required|boolean',
+            ];
+        }
+        $validated = $request->validate($rules);
+        $updates = array_intersect_key($validated, array_flip([
+            'first_name', 'last_name', 'email', 'phone', 'membership_number', 'medical_certificate_expires_on',
+        ]));
+        if (data_get($site, 'operations.shuttle')) {
+            if ($validated['shuttle_boarded'] && (! $validated['shuttle_needed'] || blank($validated['shuttle_assignment'] ?? null))) {
+                return back()->withInput()->withErrors(['shuttle_boarded' => 'Assegna una navetta prima di segnare l’imbarco.']);
+            }
+            $updates['shuttle_needed'] = (bool) $validated['shuttle_needed'];
+            $updates['shuttle_assignment'] = $validated['shuttle_needed'] ? ($validated['shuttle_assignment'] ?? null) : null;
+            $updates['shuttle_boarded_at'] = $validated['shuttle_boarded'] ? ($record->shuttle_boarded_at ?? now()) : null;
+        }
+        if (data_get($site, 'operations.bib_pickup')) {
+            if ($validated['bib_collected'] && (blank($validated['bib_number'] ?? null) || $record->order->status !== 'paid')) {
+                return back()->withInput()->withErrors(['bib_collected' => 'Assegna un pettorale a un ordine pagato prima di segnarne il ritiro.']);
+            }
+            $updates['bib_number'] = $validated['bib_number'] ?? null;
+            $updates['bib_collected_at'] = $validated['bib_collected'] ? ($record->bib_collected_at ?? now()) : null;
+        }
+        $record->update($updates);
         return redirect()->route('admin.ticket.edit', ['demo' => $site['slug'], 'ticket' => $record->id])->with('success', 'Participant updated.');
     }
 
@@ -187,12 +232,20 @@ class DemoAdminController extends Controller
     {
         $site = $this->site($request);
         $tickets = $this->tickets($site['slug'], $request)->orderBy('tickets.id')->cursor();
-        return response()->streamDownload(function () use ($tickets) {
+        $hasOperations = (bool) data_get($site, 'operations');
+        return response()->streamDownload(function () use ($tickets, $hasOperations) {
             $output = fopen('php://output', 'w');
-            fputcsv($output, ['ticket_code', 'order_code', 'race', 'first_name', 'last_name', 'email', 'status', 'price_paid']);
+            $header = ['ticket_code', 'order_code', 'race', 'first_name', 'last_name', 'email', 'status', 'price_paid'];
+            if ($hasOperations) $header = array_merge($header, ['documents_status', 'shuttle_needed', 'shuttle_assignment', 'shuttle_boarded_at', 'bib_number', 'bib_collected_at']);
+            fputcsv($output, $header);
             foreach ($tickets as $ticket) {
                 $values = [$ticket->unique_ticket_code, $ticket->order->group_code, $ticket->route_choice,
                     $ticket->first_name, $ticket->last_name, $ticket->email, $ticket->status, $ticket->price_paid];
+                if ($hasOperations) $values = array_merge($values, [
+                    $ticket->eligibility_status, $ticket->shuttle_needed ? 'yes' : 'no',
+                    $ticket->shuttle_assignment, $ticket->shuttle_boarded_at,
+                    $ticket->bib_number, $ticket->bib_collected_at,
+                ]);
                 fputcsv($output, array_map(fn ($value) => preg_match('/^[=+@-]/', (string) $value) ? "'".$value : $value, $values));
             }
             fclose($output);

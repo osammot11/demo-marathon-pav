@@ -48,6 +48,12 @@ class DemoCheckoutController extends Controller
             $required = in_array($field, $registration['optional_fields'] ?? [], true) ? 'nullable' : 'required';
             $rules[$field] = $required.'|'.self::FIELDS[$field];
         }
+        if (isset($rules['dob']) && (int) ($registration['minimum_age'] ?? 0) > 0) {
+            $rules['dob'] .= '|before_or_equal:'.now()->subYears((int) $registration['minimum_age'])->toDateString();
+        }
+        if (data_get($registration, 'shuttle.enabled')) {
+            $rules['shuttle_needed'] = 'required|boolean';
+        }
         if (data_get($registration, 'membership.enabled')) {
             $rules['membership_type'] = ['required', Rule::in(data_get($registration, 'membership.types', []))];
             $rules['membership_number'] = 'required_unless:membership_type,none|nullable|string|max:100';
@@ -105,7 +111,7 @@ class DemoCheckoutController extends Controller
                     'country' => $validated['country'] ?? 'N/A',
                     'nationality' => strtoupper($validated['nationality'] ?? 'IT'),
                     'phone' => $validated['phone'] ?? 'N/A',
-                    'tshirt_size' => 'N/A', 'shuttle_needed' => false, 'celiac' => false,
+                    'tshirt_size' => 'N/A', 'shuttle_needed' => (bool) ($validated['shuttle_needed'] ?? false), 'celiac' => false,
                     'price_paid' => $price, 'payment_tag' => 'Stripe test', 'status' => 'pending',
                     'membership_type' => $validated['membership_type'] ?? null,
                     'membership_number' => ($validated['membership_type'] ?? null) === 'none' ? null : ($validated['membership_number'] ?? null),

@@ -4,6 +4,17 @@
 <h1>Gestione demo</h1>
 <form method="get" action="{{ route('admin.dashboard') }}" class="panel"><label>Demo corrente<select name="demo" onchange="this.form.submit()">@foreach($demos as $slug => $demo)<option value="{{ $slug }}" @selected($site['slug'] === $slug)>{{ $demo['name'] }} ({{ $slug }})</option>@endforeach</select></label><noscript><button type="submit">Apri</button></noscript></form>
 <p><strong>{{ $site['name'] }}</strong> · {{ $totalTickets }} ticket totali · <a href="{{ route('demo.home', ['demo' => $site['slug']]) }}" target="_blank" rel="noopener">Apri sito ↗</a></p>
+@if($operations)
+<section class="panel"><h2>Flusso operativo degli atleti</h2><p class="small muted">Pagamento, documenti, navetta e ritiro pettorale in un'unica vista.</p>
+    <div class="operational-metrics">
+        <div><strong>{{ $operationalCounts['paid'] }}</strong><span>Ordini pagati</span></div>
+        <div><strong>{{ $operationalCounts['documents_pending'] }}</strong><span>Documenti da verificare</span></div>
+        <div><strong>{{ $operationalCounts['shuttle_requested'] }}</strong><span>Navetta richiesta</span></div>
+        <div><strong>{{ $operationalCounts['shuttle_assigned'] }}</strong><span>Navette assegnate</span></div>
+        <div><strong>{{ $operationalCounts['bib_collected'] }}</strong><span>Pettorali ritirati</span></div>
+    </div>
+</section>
+@endif
 
 <div class="grid">
     <section class="panel"><h2>Prezzi di prova</h2>@foreach($prices as $race => $price)<form method="post" action="{{ route('admin.price') }}" class="inline">@csrf<input type="hidden" name="demo" value="{{ $site['slug'] }}"><input type="hidden" name="race" value="{{ $race }}"><label>Gara {{ $race }}<input name="price" type="number" min="0.50" step="0.01" value="{{ $price }}" required></label><button type="submit">Salva</button></form>@endforeach</section>
@@ -14,7 +25,7 @@
 
 <section class="panel"><div class="actions"><h2 style="margin-right:auto">Iscritti e ticket</h2><a class="btn" href="{{ route('admin.export', request()->query() + ['demo' => $site['slug']]) }}">Esporta CSV</a></div>
     <form method="get" action="{{ route('admin.dashboard') }}" class="inline"><input type="hidden" name="demo" value="{{ $site['slug'] }}"><label>Cerca<input name="search" value="{{ request('search') }}" placeholder="Nome, email o codice"></label><label>Stato<select name="status"><option value="">Tutti</option>@foreach(['pending','pending_review','active'] as $status)<option value="{{ $status }}" @selected(request('status') === $status)>{{ $status }}</option>@endforeach</select></label><button type="submit">Filtra</button></form>
-    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Atleta</th><th>Gara</th><th>Ordine</th><th>Stato</th><th>Importo</th><th></th></tr></thead><tbody>@forelse($tickets as $ticket)<tr><td>{{ $ticket->id }}</td><td>{{ $ticket->first_name }} {{ $ticket->last_name }}<br><span class="muted">{{ $ticket->email }}</span></td><td>{{ $ticket->route_choice }}</td><td>{{ $ticket->order->group_code }}</td><td><span class="pill">{{ $ticket->status }}</span></td><td>€ {{ number_format($ticket->price_paid, 2, ',', '.') }}</td><td><a href="{{ route('admin.ticket.edit', ['demo' => $site['slug'], 'ticket' => $ticket->id]) }}">Apri</a></td></tr>@empty<tr><td colspan="7">Nessun ticket per questa demo.</td></tr>@endforelse</tbody></table></div>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Atleta</th><th>Gara</th><th>Ordine</th><th>Stato</th><th>Importo</th>@if($operations)<th>Documenti</th><th>Navetta</th><th>Pettorale</th>@endif<th></th></tr></thead><tbody>@forelse($tickets as $ticket)<tr><td>{{ $ticket->id }}</td><td>{{ $ticket->first_name }} {{ $ticket->last_name }}<br><span class="muted">{{ $ticket->email }}</span></td><td>{{ $ticket->route_choice }}</td><td>{{ $ticket->order->group_code }}</td><td><span class="pill">{{ $ticket->status }}</span></td><td>€ {{ number_format($ticket->price_paid, 2, ',', '.') }}</td>@if($operations)<td>{{ $ticket->eligibility_status === 'pending_review' ? 'Da verificare' : ($ticket->eligibility_status === 'approved' ? 'Approvati' : '—') }}</td><td>{{ $ticket->shuttle_needed ? ($ticket->shuttle_boarded_at ? 'Imbarcato' : ($ticket->shuttle_assignment ?: 'Da assegnare')) : 'Non richiesta' }}</td><td>{{ $ticket->bib_collected_at ? 'Ritirato' : ($ticket->bib_number ?: 'Da assegnare') }}</td>@endif<td><a href="{{ route('admin.ticket.edit', ['demo' => $site['slug'], 'ticket' => $ticket->id]) }}">Apri</a></td></tr>@empty<tr><td colspan="{{ $operations ? 10 : 7 }}">Nessun ticket per questa demo.</td></tr>@endforelse</tbody></table></div>
     <div class="pagination">{{ $tickets->links() }}</div>
 </section>
 @endsection

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#132622"/><stop offset=".48" stop-color="#31504a"/><stop offset="1" stop-color="#a18c68"/></linearGradient>
+  <radialGradient id="glow" cx="76%" cy="39%" r="42%"><stop offset="0" stop-color="#f0c18a" stop-opacity=".78"/><stop offset=".35" stop-color="#dfa76d" stop-opacity=".34"/><stop offset="1" stop-color="#d19d6b" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#50645a"/><stop offset="1" stop-color="#22382f"/></linearGradient>
+  <linearGradient id="front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34473a"/><stop offset="1" stop-color="#0b1b18"/></linearGradient>
+  <pattern id="grain" width="11" height="11" patternUnits="userSpaceOnUse"><circle cx="1" cy="2" r=".5" fill="#fff" opacity=".16"/><circle cx="7" cy="9" r=".6" fill="#fff" opacity=".12"/><circle cx="5" cy="4" r=".4" fill="#000" opacity=".18"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#sky)"/><rect width="1600" height="900" fill="url(#glow)"/>
+<circle cx="1210" cy="302" r="78" fill="#f1c996" opacity=".7"/>
+<path d="M0 584 121 555 220 572 349 499 421 513 545 447 626 488 741 391 839 450 952 344 1065 444 1151 390 1260 473 1385 407 1490 499 1600 456V900H0Z" fill="#8a9787" opacity=".34"/>
+<path d="M0 628 141 597 274 608 365 533 428 570 546 465 653 548 747 423 852 521 969 368 1060 469 1157 420 1251 523 1380 434 1501 553 1600 500V900H0Z" fill="url(#rear)"/>
+<path d="m719 456 28-33 36 47-28-13-13 13-23-14Zm216-51 34-37 49 57-36-13-17 17-30-24Zm405 67 40-38 42 57-29-17-16 12-37-14Z" fill="#d7d3bd" opacity=".45"/>
+<path d="M0 730 120 675 251 723 348 646 475 698 580 625 697 676 824 598 954 668 1068 570 1195 655 1310 591 1445 684 1600 604V900H0Z" fill="url(#front)"/>
+<path d="M0 777c205-56 290-30 440 31 120 48 249-7 391-13 184-8 267 86 455 20 120-42 205-28 314 9v76H0Z" fill="#10231f"/>
+<g fill="none" stroke="#a6b49a" stroke-opacity=".16" stroke-width="2">
+<path d="M-20 715c190-73 263-38 362 19 116 65 229 41 330-15 135-74 207-34 303 7 132 56 242 6 360-35 101-35 184-34 285 6"/>
+<path d="M-20 745c190-73 263-38 362 19 116 65 229 41 330-15 135-74 207-34 303 7 132 56 242 6 360-35 101-35 184-34 285 6"/>
+<path d="M-20 779c190-73 263-38 362 19 116 65 229 41 330-15 135-74 207-34 303 7 132 56 242 6 360-35 101-35 184-34 285 6"/>
+<path d="M-20 812c190-73 263-38 362 19 116 65 229 41 330-15 135-74 207-34 303 7 132 56 242 6 360-35 101-35 184-34 285 6"/>
+</g>
+<rect width="1600" height="900" fill="url(#grain)" opacity=".7"/>
+</svg>
