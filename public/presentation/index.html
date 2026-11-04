@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a252b">
+  <title>CRO Trail 2027 — Technical proposal</title>
+  <link rel="stylesheet" href="slides.css?v=2">
+  <script src="slides.js?v=2" defer></script>
+</head>
+<body>
+  <main id="deck" aria-label="CRO Trail technical proposal presentation">
+    <section class="slide cover is-active" data-title="Proposal" aria-label="Slide 1 of 15">
+      <div class="cover-image" aria-hidden="true"></div>
+      <div class="cover-shade" aria-hidden="true"></div>
+      <div class="slide-inner cover-content">
+        <div class="eyebrow">CRO TRAIL 2027 <span class="rule"></span> TECHNICAL PROPOSAL</div>
+        <h1>One journey.<br><em>From trail to ticket.</em></h1>
+        <p class="lede">A multilingual event website with a connected registration and payment flow.</p>
+        <div class="cover-bottom"><span>Tommaso Giovannoni · Produce a Value</span><span>23 October 2026</span></div>
+      </div>
+      <aside class="notes">Open with the actual product, then the architecture. The goal of this discussion is to learn CRO Trail's operational needs and decide whether an integrated checkout is valuable alongside, or instead of, the announced One Hundred registration route.</aside>
+    </section>
+
+    <section class="slide dark" data-title="Starting point" aria-label="Slide 2 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">01 / THE STARTING POINT</div>
+        <h2>The 2027 story is already visible.<br><em>The registration journey is still to be defined.</em></h2>
+        <div class="baseline">
+          <div class="baseline-item"><strong>03</strong><span>distances announced<br>100 · 42 · 21 km</span></div>
+          <div class="baseline-item"><strong>June</strong><span>2027 event window<br>exact date pending</span></div>
+          <div class="baseline-item"><strong>One Hundred</strong><span>named publicly as the future registration platform</span></div>
+        </div>
+        <p class="source">Public baseline: <a href="https://www.crotrail.it/" target="_blank" rel="noopener">crotrail.it ↗</a>, reviewed 22 October 2026. This does not establish how the organisers' internal tools work.</p>
+      </div>
+      <aside class="notes">The public website already communicates the three distances, June 2027 and the intention to open registration on the official One Hundred platform. Do not assume that their current back office is weak or that they have committed to changing providers.</aside>
+    </section>
+
+    <section class="slide light" data-title="The opportunity" aria-label="Slide 3 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">02 / THE OPPORTUNITY</div>
+        <h2>Make each race page<br><em>the start of registration.</em></h2>
+        <div class="journeys">
+          <div class="journey-row"><span class="journey-label">PUBLICLY ANNOUNCED</span><div class="journey-flow"><span>CRO Trail site</span><b>→</b><span>One Hundred registration</span></div></div>
+          <div class="journey-row proposed"><span class="journey-label">INTEGRATED OPTION</span><div class="journey-flow"><span>Race page</span><b>→</b><span>Entry form</span><b>→</b><span>Payment</span><b>→</b><span>Confirmation</span></div></div>
+        </div>
+        <p class="statement">One clear path for each distance, in Italian and English, with race details and entry rules managed together.</p>
+      </div>
+      <aside class="notes">This is a product choice, not a claim that the existing flow is broken. The public site currently points to a future One Hundred registration journey. Our alternative keeps the athlete on the event website from race selection to payment and confirmation. We should compare it with their actual process after hearing the team.</aside>
+    </section>
+
+    <section class="slide dark" data-title="Working prototype" aria-label="Slide 4 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">03 / WHAT IS WORKING LOCALLY</div>
+        <h2>A real flow to inspect.<br><em>Using test payments.</em></h2>
+        <div class="proof-grid">
+          <div><span class="proof-index">01</span><h3>Browse</h3><p>Dedicated 100, 42 and 21 km pages with an IT / EN switch.</p></div>
+          <div><span class="proof-index">02</span><h3>Enter</h3><p>Race-specific registration forms and clearly marked test prices.</p></div>
+          <div><span class="proof-index">03</span><h3>Pay</h3><p>Stripe Elements opens a test PaymentIntent for the selected entry.</p></div>
+        </div>
+        <div class="live-rail"><span>LOCAL DEMO</span><a href="/" target="_blank" rel="noopener">Open website ↗</a><a href="/iscrizione/21" target="_blank" rel="noopener">Open 21 km entry ↗</a></div>
+      </div>
+      <aside class="notes">Show the home page, switch between English and Italian, choose a race, open its entry form, and reach the Stripe test payment page. Prices of €45, €35 and €28 are placeholders for the 100, 42 and 21 km races. No live card charge or production confirmation is being represented here.</aside>
+    </section>
+
+    <section class="slide light" data-title="Stack" aria-label="Slide 5 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">04 / PROPOSED STACK</div>
+        <h2>Simple layers.<br><em>Clear ownership.</em></h2>
+        <div class="stack-list">
+          <div><span>EXPERIENCE</span><strong>HTML · CSS · JavaScript · Laravel Blade</strong><small>Fast, accessible, server-rendered IT / EN pages</small></div>
+          <div><span>APPLICATION</span><strong>Laravel 12 · PHP</strong><small>Race rules, validation, orders and registration state</small></div>
+          <div><span>DATA</span><strong>Relational database</strong><small>Entrants, orders and payment status in one model</small></div>
+          <div><span>SERVICES</span><strong>Stripe · PayPal · Brevo</strong><small>Payment provider and event messages connected by verified events</small></div>
+        </div>
+        <p class="source">The local prototype uses SQLite. Production database and email service are selected with the organisers; VPS hosting is included in the proposed annual maintenance.</p>
+      </div>
+      <aside class="notes">The implementation is a Laravel 12 application with Blade templates and standard web technologies. This keeps the frontend lightweight and the business rules in one place. SQLite is appropriate for the local demonstration; the production database and VPS specification would be agreed with the organisers. The VPS cost is included in the annual maintenance price. Stripe is integrated in test mode. Email delivery is currently log mode and must be configured before launch; third-party email-provider fees are excluded.</aside>
+    </section>
+
+    <section class="slide dark" data-title="Why it helps" aria-label="Slide 6 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">05 / PRACTICAL ADVANTAGES</div>
+        <h2>One source for the details<br><em>athletes act on.</em></h2>
+        <div class="benefits">
+          <div><span>01 / CONSISTENCY</span><p>Race information, eligibility, price and form can follow the same event configuration.</p></div>
+          <div><span>02 / CONTINUITY</span><p>Distance choice carries through to the correct form and payment amount.</p></div>
+          <div><span>03 / FLEXIBILITY</span><p>Registration windows and language can be controlled for each race.</p></div>
+          <div><span>04 / ECONOMICS</span><p>A bespoke checkout can avoid an extra per-ticket software fee; payment-provider fees still apply.</p></div>
+        </div>
+        <p class="source">These are expected benefits of the proposed architecture, not measured improvements over One Hundred.</p>
+      </div>
+      <aside class="notes">Tie each benefit to a specific design choice. We do not know the commercial terms, service quality or internal functionality of One Hundred's platform, so avoid a numerical cost comparison. My original email stated that I do not charge a per-ticket commission for the bespoke solution; provider fees remain.</aside>
+    </section>
+
+    <section class="slide light case-study" data-title="Francigena case study" aria-label="Slide 7 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">06 / PROVEN IN A LIVE EVENT</div>
+        <h2>The same architecture.<br><em>1,500+ real entries.</em></h2>
+        <div class="case-metrics">
+          <div><span>27 SEPTEMBER 2026</span><strong>1,500+</strong><p>registrations handled at Francigena Tuscany Marathon</p></div>
+          <div><span>AT PEAK</span><strong>&lt;6%</strong><p>server resource use, including the busiest periods</p></div>
+          <div><span>ANNUAL FEE SAVINGS</span><strong>€3,700+</strong><p>at approximately 1,500 tickets</p></div>
+        </div>
+        <div class="fee-shift"><span>AVERAGE FEE PER TICKET</span><b>€3.15</b><i>→</i><b>€0.67</b><small>From ENDU → our custom implementation</small></div>
+        <p class="source">The <a href="https://francigenatuscanymarathon.com/" target="_blank" rel="noopener">official event site ↗</a> lists the 27 September date and 1,502 registrations. CRO Trail results will depend on its own volume and payment mix.</p>
+      </div>
+      <aside class="notes">This is a recent case study from Francigena Tuscany Marathon, which ran on 27 September 2026. The official site publicly shows 1,502 registrations. According to our project operating data, peak server resource use stayed below 6%; the average per-ticket fee fell from €3.15 with the previous provider to €0.67 with our implementation. The €2.48 difference over about 1,500 entries is €3,720, so "over €3,700" is arithmetically consistent. This is evidence from Francigena, not a promised result for CRO Trail.</aside>
+    </section>
+
+    <section class="slide accent" data-title="Transaction integrity" aria-label="Slide 8 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">07 / TRANSACTION INTEGRITY</div>
+        <h2>A paid entry is a verified state,<br><em>not just a thank-you page.</em></h2>
+        <div class="payment-flow"><span>Validated entry</span><i>→</i><span>PaymentIntent</span><i>→</i><span>Stripe event</span><i>→</i><span>Paid order</span><i>→</i><span>Eligibility review</span></div>
+      </div>
+      <aside class="notes">The current code creates Stripe PaymentIntents and has signed webhook verification for successful events. For CRO Trail, successful payment creates an entry pending eligibility review; a valid ticket must follow organiser approval. The live release must verify asynchronous and failed payment cases, refunds, duplicate events, operational reconciliation, document review, ticket delivery and support workflows with real credentials and a public endpoint.</aside>
+    </section>
+
+    <section class="slide light eligibility" data-title="Entry eligibility" aria-label="Slide 9 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">08 / ENTRY ELIGIBILITY</div>
+        <h2>Registration reflects<br><em>the race rules.</em></h2>
+        <div class="eligibility-grid">
+          <div><span>01 / MEMBERSHIP</span><strong>UISP · EPS · FIDAL · RunCard</strong><p>Athletes choose their affiliation and enter its membership number.</p></div>
+          <div><span>02 / MEDICAL DOCUMENT</span><strong>Athletics certificate</strong><p>Certificate upload, expiry date and athlete attestation are part of the entry form.</p></div>
+          <div><span>03 / NON-MEMBERS</span><strong>+ €10 in the demo</strong><p>A configurable supplement is included in the total before payment.</p></div>
+          <div><span>04 / ORGANISER REVIEW</span><strong>Payment ≠ approval</strong><p>The paid entry stays pending until its eligibility is checked; no valid ticket is issued yet.</p></div>
+        </div>
+        <p class="source">The €10 supplement is a demo value pending CRO Trail's final rules. Certificate files are stored privately; the live launch also requires an approved medical-data notice and an organiser review process.</p>
+      </div>
+      <aside class="notes">The current prototype now collects the affiliation or non-member choice, membership number where relevant, athletics medical certificate, expiry date and attestation in Italian and English. The backend calculates the non-member surcharge, currently €10 in test mode. A successful payment leaves the entry pending review and suppresses valid ticket download. Before production, confirm the final eligibility rules, amount, data notice, event-date certificate validity and who performs document approval.</aside>
+    </section>
+
+    <section class="slide dark extensibility" data-title="Extensibility" aria-label="Slide 10 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">09 / ROOM TO GROW</div>
+        <h2>Custom workflows.<br><em>No platform lock-in.</em></h2>
+        <div class="extensions">
+          <div><span>01</span><strong>Redis / Valkey</strong><p>Optional caching as traffic or workload grows.</p></div>
+          <div><span>02</span><strong>Scannable tickets</strong><p>QR codes for ticket validation at check-in.</p></div>
+          <div><span>03</span><strong>Race results</strong><p>Record finish times and publish rankings.</p></div>
+          <div><span>04</span><strong>SEPA transfer</strong><p>Optional bank transfer with a SEPA QR code.</p></div>
+        </div>
+        <p class="source">The proposed Laravel application does not depend on WordPress plugin chains or Webflow SaaS limits. These extensions are available on request and quoted separately; they are not part of the current demo or base offer.</p>
+      </div>
+      <aside class="notes">This slide is about architectural freedom. It does not claim that CRO Trail currently uses WordPress or Webflow, nor that every plugin-based site is unstable. The Laravel application is self-hosted and can implement event-specific workflows without relying on plugin compatibility or SaaS feature limits. Redis or Valkey, ticket QR verification, rankings and bank-transfer SEPA QR are possible future modules, not included in the base price.</aside>
+    </section>
+
+    <section class="slide light" data-title="Delivery" aria-label="Slide 11 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">10 / FROM PROTOTYPE TO LAUNCH</div>
+        <h2>The next work is<br><em>operational.</em></h2>
+        <ol class="roadmap">
+          <li><b>Agree the model</b><span>Entry rules, categories, prices, capacity, payment ownership and the role of One Hundred.</span></li>
+          <li><b>Complete the product</b><span>Final race content, organiser administration, exports, email templates and support flows.</span></li>
+          <li><b>Harden and launch</b><span>Privacy/legal review, hosting, production credentials, webhook, payment/refund tests and monitoring.</span></li>
+        </ol>
+      </div>
+      <aside class="notes">Two fixed-scope price options appear at the end of this deck. If One Hundred remains the registration operator, the lighter website integration applies. If CRO Trail chooses a bespoke checkout, first define payment ownership, compliance and support responsibilities, then complete the administrator workflow and production testing. Timelines depend on final requirements and content.</aside>
+    </section>
+
+    <section class="slide dark" data-title="Decision" aria-label="Slide 12 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">11 / DECISION FOR THE TEAM</div>
+        <h2>Which operating model<br><em>fits CRO Trail 2027?</em></h2>
+        <div class="options"><div><strong>A</strong><h3>Keep One Hundred checkout</h3><p>Improve the event website and connect each race to the official entry path.</p></div><div><strong>B</strong><h3>Use an integrated checkout</h3><p>Own the entry journey and registration data in a CRO Trail application.</p></div></div>
+        <p class="source">The right choice depends on the team's existing workflow, contracts, data needs and support capacity.</p>
+      </div>
+      <aside class="notes">Ask the team how registrations are handled today, who owns payments and entrant data, whether they need One Hundred's operational tools, which languages and categories are required, and what the launch window is. This makes the comparison useful rather than speculative.</aside>
+    </section>
+
+    <section class="slide light investment" data-title="Investment" aria-label="Slide 13 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">12 / COMMERCIAL PROPOSAL</div>
+        <h2>Two routes.<br><em>One CRO Trail website.</em></h2>
+        <div class="quote-options">
+          <div><span>A / USE YOUR EXISTING TICKETING</span><strong>€1,850 <small>build</small></strong><b>€480 / year maintenance</b><p>IT / EN static website, three race pages and clear links to your existing annual ticketing system. No new checkout or ticket administration.</p></div>
+          <div><span>B / INTEGRATED REGISTRATION</span><strong>€6,200 <small>build</small></strong><b>€1,350 / year maintenance</b><p>IT / EN website, three race flows, internal Stripe checkout, order administration, confirmation emails, production setup and handover.</p></div>
+        </div>
+        <p class="source">Both annual maintenance prices include the required VPS hosting, technical updates, monitoring and backup checks. Email-provider fees, domain and payment processing are excluded; <a href="https://stripe.com/it/pricing" target="_blank" rel="noopener">Stripe rates ↗</a>. Prices exclude VAT where applicable.</p>
+      </div>
+      <aside class="notes">Option A costs €1,850 to build and €480 per year, prepaid. It is a bilingual static event site that points each race to the organisers' existing annual ticketing system; it does not include a checkout, payment handling, an order database or ticket delivery. Updating those links for one new edition is included in annual care. Option B costs €6,200 to build and €1,350 per year, prepaid, and includes the internal registration and payment platform described in this deck. Both annual fees include the VPS required to host the respective site plus routine updates, monitoring and backup checks. The cost of any third-party email automation service is excluded, as are domain, ticket-platform and payment-provider charges. This is a scoped commercial proposal; extras such as QR check-in and rankings are separate.</aside>
+    </section>
+
+    <section class="slide dark terms" data-title="Payment terms" aria-label="Slide 14 of 15">
+      <div class="slide-inner">
+        <div class="eyebrow">13 / PAYMENT SCHEDULE</div>
+        <h2>Half to start.<br><em>Balance before launch.</em></h2>
+        <div class="schedule-head"><span>OPTION</span><span>ON ACCEPTANCE</span><span>BEFORE DEPLOYMENT</span><span>FIRST YEAR</span></div>
+        <div class="schedule-row"><span>A / EXISTING TICKETING</span><strong>€925</strong><strong>€1,405</strong><strong>€2,330</strong></div>
+        <div class="schedule-row"><span>B / INTEGRATED</span><strong>€3,100</strong><strong>€4,450</strong><strong>€7,550</strong></div>
+        <div class="schedule-detail">
+          <p><b>A:</b> €925 build balance + €480 first-year maintenance = €1,405 before deployment.</p>
+          <p><b>B:</b> €3,100 build balance + €1,350 first-year maintenance = €4,450 before deployment.</p>
+        </div>
+        <p class="source">For either option, the first annual maintenance fee is paid 100% in advance on the same day as the 50% build balance, before deployment. Coverage begins at go-live; renewals are prepaid annually.</p>
+      </div>
+      <aside class="notes">The same terms apply to both options. Option A: €925 advance, then €925 build balance plus €480 first-year maintenance, together €1,405 before deployment; first-year total €2,330. Option B: €3,100 advance, then €3,100 build balance plus €1,350 first-year maintenance, together €4,450 before deployment; first-year total €7,550. The full first-year maintenance fee is paid on the exact same day as the build balance, before deployment. Coverage starts at go-live and renews annually in advance. All figures exclude any applicable VAT and direct third-party charges.</aside>
+    </section>
+
+    <section class="slide finale" data-title="Discussion" aria-label="Slide 15 of 15">
+      <div class="slide-inner finale-inner">
+        <div class="eyebrow">CRO TRAIL 2027 / DISCUSSION</div>
+        <h2>Let's test the journey<br><em>against your real requirements.</em></h2>
+        <div class="final-links"><a href="/" target="_blank" rel="noopener">Open the working prototype ↗</a><a href="https://www.crotrail.it/" target="_blank" rel="noopener">View today's public site ↗</a></div>
+        <div class="final-footer"><span>Tommaso Giovannoni · Produce a Value</span><span>23 October 2026</span></div>
+      </div>
+      <aside class="notes">Transition into the live demo. Ask for corrections to the assumptions in this deck. Nothing here requires a decision on the call; the useful outcome is a shared picture of requirements and a clear next step.</aside>
+    </section>
+  </main>
+
+  <footer class="presentation-controls" aria-label="Presentation controls">
+    <button id="previous" type="button" aria-label="Previous slide">←</button>
+    <div class="slide-progress"><span id="counter">01 / 15</span><div class="progress-track"><div id="progress-bar"></div></div></div>
+    <button id="next" type="button" aria-label="Next slide">→</button>
+    <button id="notes-toggle" type="button" aria-label="Toggle speaker notes" title="Speaker notes (N)">Notes</button>
+    <button id="fullscreen" type="button" aria-label="Toggle fullscreen" title="Fullscreen (F)">⛶</button>
+  </footer>
+  <div id="notes-panel" class="notes-panel" role="region" aria-label="Speaker notes" hidden><div class="notes-heading">SPEAKER NOTES <button id="notes-close" type="button" aria-label="Close speaker notes">×</button></div><p id="notes-text"></p></div>
+  <div id="live-announcement" class="sr-only" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+@extends('demo.admin.layout')
+@section('title', 'Ticket')
+@section('content')
+<p><a href="{{ route('admin.dashboard', ['demo' => $site['slug']]) }}">← Torna a {{ $site['name'] }}</a></p>
+<h1>Ticket #{{ $ticket->id }}</h1><p>Ordine {{ $ticket->order->group_code }} · Stato {{ $ticket->status }}</p>
+<div class="grid"><section class="panel"><h2>Dati partecipante</h2><form method="post" action="{{ route('admin.ticket.update', ['ticket' => $ticket->id]) }}">@csrf @method('PATCH')<input type="hidden" name="demo" value="{{ $site['slug'] }}"><label>Nome<input name="first_name" value="{{ old('first_name', $ticket->first_name) }}" required></label><label>Cognome<input name="last_name" value="{{ old('last_name', $ticket->last_name) }}" required></label><label>Email<input type="email" name="email" value="{{ old('email', $ticket->email) }}" required></label><label>Telefono<input name="phone" value="{{ old('phone', $ticket->phone) }}"></label><label>Numero tessera<input name="membership_number" value="{{ old('membership_number', $ticket->membership_number) }}"></label><label>Scadenza certificato<input name="medical_certificate_expires_on" type="date" value="{{ old('medical_certificate_expires_on', $ticket->medical_certificate_expires_on) }}"></label><button type="submit">Salva</button></form></section>
+<section class="panel"><h2>Verifica</h2><p>Stato documenti: {{ $ticket->eligibility_status ?? 'non richiesti' }}</p>@if($ticket->medical_certificate_path)<p><a class="btn" href="{{ route('admin.ticket.document', ['demo' => $site['slug'], 'ticket' => $ticket->id]) }}">Scarica documento privato</a></p>@endif
+@if($ticket->order->status === 'paid' && $ticket->status !== 'active')<form method="post" action="{{ route('admin.ticket.approve', ['ticket' => $ticket->id]) }}">@csrf<input type="hidden" name="demo" value="{{ $site['slug'] }}"><button type="submit">Approva ticket</button></form>@endif
+@if($ticket->unique_ticket_code)<p>Codice: <strong>{{ $ticket->unique_ticket_code }}</strong></p><a href="{{ route('demo.ticket', ['demo' => $site['slug'], 'unique_code' => $ticket->unique_ticket_code]) }}">Visualizza ticket ↗</a>@endif
+<p class="small muted">La demo non invia email reali.</p></section></div>
+@endsection
