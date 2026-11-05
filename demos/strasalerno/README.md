@@ -11,3 +11,5 @@ Official sources:
 - https://www.visnovasalerno.it/wp-content/uploads/2026/10/percorso-strasalerno-half-maratho-e-10k.pdf
 
 The family demo registration is for an adult only. The official 2026 rules allowed free under-12 participation with an accompanying adult; the demo links to the organizer for that case. Do not use real personal data or medical documents.
+
+Group registration accepts 1–10 adults in one order, including mixed distances. Each participant has individual eligibility checks and a ticket. A discount code reduces each participant's test price. The final amount is calculated on the server and paid in one Stripe test PaymentIntent.

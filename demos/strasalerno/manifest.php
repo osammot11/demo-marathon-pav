@@ -37,4 +37,5 @@ return [
         'privacy_page' => 'privacy',
     ],
     'operations' => ['bib_pickup' => true],
+    'group_registration' => ['enabled' => true, 'max_participants' => 10],
 ];

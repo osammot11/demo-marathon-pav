@@ -283,6 +283,7 @@ class DemoAdminController extends Controller
     {
         $race = $this->registry->race($site, $data['race']);
         $order->tickets()->create([
+            'race_slug' => $data['race'],
             'first_name' => $data['first_name'], 'last_name' => $data['last_name'],
             'email' => $data['email'], 'route_choice' => $race['name'],
             'dob' => '1990-01-01', 'birth_place' => 'N/A', 'residence_address' => 'N/A',

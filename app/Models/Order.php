@@ -15,6 +15,6 @@ class Order extends Model
     // Un ordine ha molti biglietti
     public function tickets()
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class)->orderBy('tickets.id');
     }
 }

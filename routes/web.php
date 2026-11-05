@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DemoAdminController;
 use App\Http\Controllers\DemoCheckoutController;
+use App\Http\Controllers\DemoGroupCheckoutController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Middleware\ResolveDemo;
@@ -37,6 +38,8 @@ Route::get('/{demo}/assets/{path}', [DemoController::class, 'asset'])
     ->where('path', '.*')->middleware(ResolveDemo::class)->name('demo.asset');
 
 Route::prefix('{demo}')->middleware(ResolveDemo::class)->group(function () {
+    Route::post('/iscrizione/{race}/gruppo', [DemoGroupCheckoutController::class, 'store'])
+        ->middleware('throttle:10,1')->name('demo.checkout.group.store');
     Route::post('/iscrizione/{race}', [DemoCheckoutController::class, 'store'])
         ->middleware('throttle:10,1')->name('demo.checkout.store');
     Route::get('/checkout/{order_code}/payment', [DemoCheckoutController::class, 'payment'])->name('demo.checkout.payment');

@@ -9,7 +9,7 @@
     <div class="registration-fact"><span>{{ __($demo['translation_key'].'checkout_participants') }}</span><strong>{{ $order->tickets->count() }}</strong></div>
     <div class="registration-fact"><span>{{ __($demo['translation_key'].'checkout_total') }}</span><strong>€ {{ number_format($order->total_amount, 2, ',', '.') }}</strong></div>
     <form id="payment-form"><div id="payment-element"></div><p id="payment-message" class="payment-message" role="alert" hidden></p><button class="button" id="submit" type="submit">{{ __($demo['translation_key'].'checkout_pay') }} € {{ number_format($order->total_amount, 2, ',', '.') }}</button></form>
-    <a class="text-link" href="{{ route(app()->getLocale() === 'en' ? 'demo.en.registration' : 'demo.registration', ['demo' => $demo['slug'], 'race' => $order->race_slug]) }}">← {{ __($demo['translation_key'].'checkout_back') }}</a>
+    <a class="text-link" href="{{ route(app()->getLocale() === 'en' ? 'demo.en.registration' : 'demo.registration', ['demo' => $demo['slug'], 'race' => $order->race_slug ?: ($order->tickets->first()?->race_slug ?: array_key_first($demo['races']))]) }}">← {{ __($demo['translation_key'].'checkout_back') }}</a>
 </div>
 <script>
 const stripe = Stripe(@json($stripeKey));

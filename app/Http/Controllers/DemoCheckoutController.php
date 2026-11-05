@@ -112,6 +112,7 @@ class DemoCheckoutController extends Controller
                 ]);
                 $name = $this->registry->race($site, $race)['name'];
                 $order->tickets()->create([
+                    'race_slug' => $race,
                     'first_name' => $validated['first_name'], 'last_name' => $validated['last_name'],
                     'email' => $validated['email'], 'route_choice' => $name,
                     'dob' => $validated['dob'] ?? '1990-01-01',
