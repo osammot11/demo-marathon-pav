@@ -35,7 +35,7 @@ class DemoCheckoutController extends Controller
         $site = $request->attributes->get('demo');
         $this->registry->race($site, $race);
         abort_unless($this->registry->isOpen($site, $race), 403);
-        $registration = $site['registration'];
+        $registration = $this->registry->registrationForRace($site, $race);
         $fields = array_values(array_unique(array_merge(['first_name', 'last_name', 'email'], $registration['fields'] ?? [])));
         $rules = [
             'locale' => ['required', Rule::in($site['locales'])],
@@ -48,8 +48,13 @@ class DemoCheckoutController extends Controller
             $required = in_array($field, $registration['optional_fields'] ?? [], true) ? 'nullable' : 'required';
             $rules[$field] = $required.'|'.self::FIELDS[$field];
         }
-        if (isset($rules['dob']) && (int) ($registration['minimum_age'] ?? 0) > 0) {
-            $rules['dob'] .= '|before_or_equal:'.now()->subYears((int) $registration['minimum_age'])->toDateString();
+        $membershipType = $request->input('membership_type');
+        $minimumAge = max(
+            (int) ($registration['minimum_age'] ?? 0),
+            is_string($membershipType) ? (int) ($registration['minimum_age_by_membership'][$membershipType] ?? 0) : 0,
+        );
+        if (isset($rules['dob']) && $minimumAge > 0) {
+            $rules['dob'] .= '|before_or_equal:'.now()->subYears($minimumAge)->toDateString();
         }
         if (data_get($registration, 'shuttle.enabled')) {
             $rules['shuttle_needed'] = 'required|boolean';
@@ -59,9 +64,11 @@ class DemoCheckoutController extends Controller
             $rules['membership_number'] = 'required_unless:membership_type,none|nullable|string|max:100';
         }
         if ($registration['medical_certificate'] ?? false) {
-            $rules['medical_certificate_expires_on'] = 'required|date|after:today';
-            $rules['medical_certificate'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:8192';
-            $rules['medical_certificate_attestation'] = 'accepted';
+            $exemptTypes = data_get($registration, 'medical_certificate_optional_for', []);
+            $isRequired = ! in_array($request->input('membership_type'), $exemptTypes, true);
+            $rules['medical_certificate_expires_on'] = ($isRequired ? 'required' : 'nullable').'|date|after:today';
+            $rules['medical_certificate'] = ($isRequired ? 'required' : 'nullable').'|file|mimes:pdf,jpg,jpeg,png|max:8192';
+            $rules['medical_certificate_attestation'] = $request->hasFile('medical_certificate') ? 'accepted' : 'nullable';
         }
         $validated = $request->validate($rules);
         app()->setLocale($validated['locale']);
@@ -94,7 +101,7 @@ class DemoCheckoutController extends Controller
         }
 
         try {
-            $order = DB::transaction(function () use ($site, $race, $validated, $price, $surcharge, $discount, $certificatePath) {
+            $order = DB::transaction(function () use ($site, $race, $registration, $validated, $price, $surcharge, $discount, $certificatePath) {
                 $order = Order::create([
                     'demo_slug' => $site['slug'], 'race_slug' => $race,
                     'group_code' => 'DEMO_'.strtoupper(Str::random(18)),
@@ -125,7 +132,7 @@ class DemoCheckoutController extends Controller
                     'non_member_surcharge' => $surcharge,
                     'medical_certificate_expires_on' => $validated['medical_certificate_expires_on'] ?? null,
                     'medical_certificate_path' => $certificatePath,
-                    'eligibility_status' => data_get($site, 'registration.membership.enabled') || data_get($site, 'registration.medical_certificate') ? 'pending_review' : 'not_required',
+                    'eligibility_status' => data_get($registration, 'membership.enabled') || data_get($registration, 'medical_certificate') ? 'pending_review' : 'not_required',
                 ]);
                 return $order;
             });

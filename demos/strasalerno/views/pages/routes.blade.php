@@ -1,0 +1,5 @@
+@extends($demoViewNamespace.'::layout')
+@section('content')
+<main id="main"><section class="subhero"><div class="wrap"><p class="eyebrow light">{{ __($translationKey.'nav_routes') }} · 2026</p><h1>{{ __($translationKey.'routes_title') }}</h1><p>{{ __($translationKey.'routes_intro') }}</p></div></section>
+<section class="section"><div class="wrap route-page-grid"><div class="route-map" aria-hidden="true"><div class="route-map-name">STRA<br>SALERNO</div><div class="route-map-wave"></div><span class="route-map-marker start">START / FINISH</span><span class="route-map-marker sea">MARE TIRRENO</span></div><div class="route-stops">@foreach(__($translationKey.'routes_places') as $place)<div><span>{{ $place['n'] }}</span><section><h2>{{ $place['name'] }}</h2><p>{{ $place['text'] }}</p></section></div>@endforeach<a class="text-link" href="https://www.visnovasalerno.it/wp-content/uploads/2026/10/percorso-strasalerno-half-maratho-e-10k.pdf" target="_blank" rel="noopener">{{ __($translationKey.'routes_source') }} <span>↗</span></a></div></div><div class="wrap"><p class="source-note">{{ __($translationKey.'race_detail_note') }}</p></div></section></main>
+@endsection

@@ -1,8 +1,11 @@
 @php
-    $registration = $demo['registration'];
+    $registration = $registration ?? $demo['registration'];
     $hasMembership = (bool) data_get($registration, 'membership.enabled', false);
     $hasMedical = (bool) ($registration['medical_certificate'] ?? false);
     $optional = $registration['optional_fields'] ?? [];
+    $privacyUrl = isset($registration['privacy_page'])
+        ? route($routePrefix.'page', ['demo' => $demoSlug, 'page' => $registration['privacy_page']])
+        : $registration['privacy_url'];
 @endphp
 <form method="post" action="{{ route('demo.checkout.store', ['demo' => $demoSlug, 'race' => $race['slug']]) }}" enctype="multipart/form-data" data-registration-pricing data-base-price="{{ $registrationPrice }}" data-non-member-surcharge="{{ $nonMemberSurcharge }}" data-locale="{{ $locale }}">
     @csrf
@@ -37,11 +40,11 @@
         @if($hasMedical)
             <div class="eligibility-fields">
                 <div class="form-grid">
-                    <label>{{ __($translationKey.'reg_medical_expiry') }}<input name="medical_certificate_expires_on" type="date" value="{{ old('medical_certificate_expires_on') }}" required></label>
-                    <label>{{ __($translationKey.'reg_medical_certificate') }}<input name="medical_certificate" type="file" accept=".pdf,.jpg,.jpeg,.png" required></label>
+                    <label>{{ __($translationKey.'reg_medical_expiry') }}<input name="medical_certificate_expires_on" type="date" value="{{ old('medical_certificate_expires_on') }}" @if(empty($registration['medical_certificate_optional_for'])) required @endif data-medical-field></label>
+                    <label>{{ __($translationKey.'reg_medical_certificate') }}<input name="medical_certificate" type="file" accept=".pdf,.jpg,.jpeg,.png" @if(empty($registration['medical_certificate_optional_for'])) required @endif data-medical-field></label>
                 </div>
                 <p class="eligibility-hint">{{ __($translationKey.'reg_medical_hint') }}</p>
-                <label class="check-line"><input type="checkbox" name="medical_certificate_attestation" value="1" required @checked(old('medical_certificate_attestation'))><span>{{ __($translationKey.'reg_medical_attestation') }}</span></label>
+                <label class="check-line"><input type="checkbox" name="medical_certificate_attestation" value="1" @if(empty($registration['medical_certificate_optional_for'])) required @endif @checked(old('medical_certificate_attestation')) data-medical-attestation><span>{{ __($translationKey.'reg_medical_attestation') }}</span></label>
             </div>
         @endif
         @if(data_get($registration, 'shuttle.enabled'))
@@ -60,7 +63,7 @@
     <div class="registration-fact total-fact"><span>{{ __($translationKey.'reg_total_price') }}</span><strong data-total-price>€ {{ number_format(($registrationPrice ?? 0) + (old('membership_type') === 'none' ? $nonMemberSurcharge : 0), 2, ',', '.') }}</strong></div>
     <label>{{ __($translationKey.'reg_discount_code') }}<input name="discount_code" type="text" value="{{ old('discount_code') }}" maxlength="100"></label>
     <fieldset class="payment-choice"><legend>{{ __($translationKey.'reg_payment') }}</legend><label><input type="radio" name="payment_method" value="stripe" @disabled(!$registrationOpen) checked> {{ __($translationKey.'reg_stripe') }}</label></fieldset>
-    <label class="check-line"><input type="checkbox" name="privacy_consent" value="1" required @disabled(!$registrationOpen) @checked(old('privacy_consent'))><span>{{ __($translationKey.'reg_privacy') }} <a href="{{ $registration['privacy_url'] }}" target="_blank" rel="noopener">{{ __($translationKey.'footer_privacy') }} ↗</a></span></label>
+    <label class="check-line"><input type="checkbox" name="privacy_consent" value="1" required @disabled(!$registrationOpen) @checked(old('privacy_consent'))><span>{{ __($translationKey.'reg_privacy') }} <a href="{{ $privacyUrl }}" target="_blank" rel="noopener">{{ __($translationKey.'footer_privacy') }} ↗</a></span></label>
     <p class="eligibility-hint">{{ __($translationKey.'demo_data_notice') }}</p>
     <button class="button form-submit" type="submit" @disabled(!$registrationOpen)>{{ $registrationOpen ? __($translationKey.'reg_pay') : __($translationKey.'reg_closed_button') }} <span>↗</span></button>
 </form>

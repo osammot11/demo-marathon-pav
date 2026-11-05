@@ -69,10 +69,17 @@ class DemoRegistry
         return $override !== null ? (float) $override : (float) $demo['races'][$race]['price'];
     }
 
+    public function registrationForRace(array $demo, string $race): array
+    {
+        abort_unless(isset($demo['races'][$race]), 404);
+
+        return array_replace_recursive($demo['registration'], $demo['races'][$race]['registration'] ?? []);
+    }
+
     public function isOpen(array $demo, string $race): bool
     {
         return isset($demo['races'][$race])
-            && (bool) data_get($demo, 'registration.open', false)
+            && (bool) data_get($this->registrationForRace($demo, $race), 'open', false)
             && $this->testStripeReady();
     }
 

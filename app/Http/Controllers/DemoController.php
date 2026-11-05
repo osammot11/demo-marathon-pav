@@ -79,6 +79,7 @@ class DemoController extends Controller
         if ($raceSlug !== null) $params['race'] = $raceSlug;
         if ($pageSlug !== null) $params['page'] = $pageSlug;
         $race = $raceSlug === null ? null : $this->registry->race($demo, $raceSlug);
+        $registration = $raceSlug === null ? $demo['registration'] : $this->registry->registrationForRace($demo, $raceSlug);
         $races = __($demo['translation_key'].'races');
         $viewName = $demo['view_namespace'].'::'.$view;
         abort_unless(View::exists($viewName), 404);
@@ -96,7 +97,8 @@ class DemoController extends Controller
             'race' => $race,
             'registrationOpen' => $raceSlug !== null && $this->registry->isOpen($demo, $raceSlug),
             'registrationPrice' => $raceSlug === null ? null : $this->registry->price($demo, $raceSlug),
-            'nonMemberSurcharge' => (float) data_get($demo, 'registration.membership.non_member_surcharge', 0),
+            'registration' => $registration,
+            'nonMemberSurcharge' => (float) data_get($registration, 'membership.non_member_surcharge', 0),
             'paymentMethods' => $this->registry->testStripeReady() ? ['stripe'] : [],
             'title' => $raceSlug === null ? $demo['name'] : $race['name'].' | '.$demo['name'],
         ]);
