@@ -68,3 +68,9 @@ php artisan serve --host=127.0.0.1 --port=8765
 ```
 
 The tests cover two distinct designs and prices, IT/EN URLs, new demo discovery, admin and public data isolation, private uploads, invalid slugs and asset traversal, test-only payment guards, webhook signatures and idempotency, and cleanup. Payment API calls are mocked in tests; a full card payment requires valid Stripe **test** credentials and a test card in the browser.
+
+### Iscrizioni multiple (default)
+
+Tutte le demo, incluse quelle generate con `demo:new`, usano il modulo condiviso per 1–10 partecipanti in un solo ordine/pagamento. Ogni partecipante sceglie la gara; campi, prezzi, tesseramento, certificati e navetta seguono la configurazione della sua gara. CSS e JavaScript del modulo sono inclusi dalle viste condivise, senza build o copia nelle demo.
+
+Il manifest può personalizzare il limite con `'group_registration' => ['max_participants' => 10]` (massimo 10), oppure disabilitare esplicitamente l'opzione con `['enabled' => false]` per ripristinare il modulo singolo. I codici sconto sono applicati a ciascun partecipante. Il totale visualizzato prima del checkout comprende i supplementi, mentre gli sconti vengono validati al checkout sul server.

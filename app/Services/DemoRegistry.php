@@ -41,6 +41,7 @@ class DemoRegistry
                 && is_string($view) && (bool) preg_match('/^[a-z0-9-]+$/', $view), 404);
         }
 
+        $manifest['group_registration'] = array_replace(['enabled' => true, 'max_participants' => 10], $manifest['group_registration'] ?? []);
         $manifest['slug'] = $slug;
         $manifest['directory'] = $directory;
         $manifest['view_namespace'] = 'demo-'.$slug;

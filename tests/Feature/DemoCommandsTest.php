@@ -29,6 +29,7 @@ class DemoCommandsTest extends TestCase
             $this->get('/'.$slug)->assertOk()->assertSee('Third Demo Test');
             $this->get('/'.$slug.'/en/gare/42')->assertOk();
             $this->get('/'.$slug.'/privacy')->assertOk();
+            $this->get('/'.$slug.'/iscrizione/42')->assertOk()->assertSee('data-demo-group', false)->assertSee('Aggiungi un partecipante');
             $this->get('/'.$slug.'/assets/site.css')->assertOk();
         } finally {
             File::deleteDirectory($directory);

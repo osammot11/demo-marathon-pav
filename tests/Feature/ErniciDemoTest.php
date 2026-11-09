@@ -34,7 +34,7 @@ class ErniciDemoTest extends TestCase
         $this->get('/maratona-degli-ernici/en/logistica')->assertOk()->assertSee('Shuttle to the start');
         $this->get('/maratona-degli-ernici/contatti')->assertOk()->assertSee('ernicaveroli@gmail.com');
         $this->get('/maratona-degli-ernici/iscrizione/44')->assertOk()
-            ->assertSee('name="shuttle_needed"', false)->assertSee('name="medical_certificate"', false);
+            ->assertSee('name="participants[0][shuttle_needed]"', false)->assertSee('name="participants[0][medical_certificate]"', false);
         $this->get('/maratona-degli-ernici/assets/site.css')->assertOk()
             ->assertHeader('Content-Type', 'text/css; charset=utf-8');
         $this->get('/maratona-degli-ernici/assets/images/ernici-ridge.svg')->assertOk()

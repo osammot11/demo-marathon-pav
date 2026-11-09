@@ -41,7 +41,7 @@ class StraSalernoDemoTest extends TestCase
             ->assertSee('name="participants[0][medical_certificate]"', false)
             ->assertSee('Aggiungi un partecipante');
         $this->get('/strasalerno/en/iscrizione/half')->assertSee('/strasalerno/en/privacy');
-        $this->get('/strasalerno/iscrizione/run')->assertSee('data-competitive-fields', false)
+        $this->get('/strasalerno/iscrizione/run')->assertSee('data-group-panel', false)
             ->assertSee('name="participants[0][race]"', false);
         $this->get('/strasalerno/assets/site.css')->assertOk()->assertHeader('Content-Type', 'text/css; charset=utf-8');
         $this->get('/strasalerno/assets/images/coastline.svg')->assertOk()->assertHeader('Content-Type', 'image/svg+xml');
@@ -109,7 +109,7 @@ class StraSalernoDemoTest extends TestCase
         app()->instance(DemoStripeGateway::class, $gateway);
 
         $base = ['locale' => 'it', 'payment_method' => 'stripe', 'privacy_consent' => 1, 'discount_code' => 'GROUP2'];
-        $this->post('/cro-trail/iscrizione/21/gruppo', $base)->assertNotFound();
+        $this->post('/cro-trail/iscrizione/21/gruppo', $base)->assertSessionHasErrors('participants');
         $people = [
             ['race' => 'half', 'first_name' => 'Ada', 'last_name' => 'Demo', 'email' => 'ada@example.test',
                 'dob' => '1990-01-01', 'city' => 'Salerno', 'membership_type' => 'fidal', 'membership_number' => 'F-TEST',

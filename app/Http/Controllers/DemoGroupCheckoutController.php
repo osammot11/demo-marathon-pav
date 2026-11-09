@@ -20,8 +20,12 @@ class DemoGroupCheckoutController extends Controller
 {
     private const FIELDS = [
         'first_name' => 'string|max:255', 'last_name' => 'string|max:255',
-        'email' => 'email|max:255', 'dob' => 'date|before:today',
-        'city' => 'string|max:255', 'phone' => 'string|max:30',
+        'dob' => 'date|before:today', 'birth_place' => 'string|max:255',
+        'codice_fiscale' => 'string|max:16', 'residence_address' => 'string|max:255',
+        'city' => 'string|max:255', 'zip_code' => 'string|max:20',
+        'province' => 'string|max:255', 'region' => 'string|max:255',
+        'country' => 'string|max:255', 'nationality' => 'string|size:2',
+        'email' => 'email|max:255', 'phone' => 'string|max:30',
     ];
 
     public function __construct(private DemoRegistry $registry, private DemoStripeGateway $stripe) {}
@@ -69,7 +73,10 @@ class DemoGroupCheckoutController extends Controller
             }
             if (data_get($registration, 'membership.enabled')) {
                 $rules['membership_type'] = ['required', Rule::in(data_get($registration, 'membership.types', []))];
-                $rules['membership_number'] = 'required|string|max:100';
+                $rules['membership_number'] = 'required_unless:membership_type,none|nullable|string|max:100';
+            }
+            if (data_get($registration, 'shuttle.enabled')) {
+                $rules['shuttle_needed'] = 'required|boolean';
             }
             if (data_get($registration, 'medical_certificate')) {
                 $isRequired = ! in_array($type, data_get($registration, 'medical_certificate_optional_for', []), true);
@@ -144,14 +151,15 @@ class DemoGroupCheckoutController extends Controller
                         'race_slug' => $person['race'],
                         'route_choice' => $this->registry->race($site, $person['race'])['name'],
                         'first_name' => $data['first_name'], 'last_name' => $data['last_name'], 'email' => $data['email'],
-                        'dob' => $data['dob'] ?? '1990-01-01', 'birth_place' => 'N/A',
-                        'residence_address' => 'N/A', 'city' => $data['city'] ?? 'N/A',
-                        'zip_code' => 'N/A', 'province' => 'N/A', 'region' => 'N/A',
-                        'country' => 'N/A', 'nationality' => 'IT', 'phone' => $data['phone'] ?? 'N/A',
-                        'tshirt_size' => 'N/A', 'shuttle_needed' => false, 'celiac' => false,
+                        'dob' => $data['dob'] ?? '1990-01-01', 'birth_place' => $data['birth_place'] ?? 'N/A',
+                        'codice_fiscale' => $data['codice_fiscale'] ?? null,
+                        'residence_address' => $data['residence_address'] ?? 'N/A', 'city' => $data['city'] ?? 'N/A',
+                        'zip_code' => $data['zip_code'] ?? 'N/A', 'province' => $data['province'] ?? 'N/A', 'region' => $data['region'] ?? 'N/A',
+                        'country' => $data['country'] ?? 'N/A', 'nationality' => strtoupper($data['nationality'] ?? 'IT'), 'phone' => $data['phone'] ?? 'N/A',
+                        'tshirt_size' => 'N/A', 'shuttle_needed' => (bool) ($data['shuttle_needed'] ?? false), 'celiac' => false,
                         'price_paid' => $person['price'], 'payment_tag' => 'Stripe test', 'status' => 'pending',
                         'membership_type' => $data['membership_type'] ?? null,
-                        'membership_number' => $data['membership_number'] ?? null,
+                        'membership_number' => ($data['membership_type'] ?? null) === 'none' ? null : ($data['membership_number'] ?? null),
                         'non_member_surcharge' => $person['surcharge'],
                         'medical_certificate_expires_on' => $data['medical_certificate_expires_on'] ?? null,
                         'medical_certificate_path' => $paths[$index] ?? null,
