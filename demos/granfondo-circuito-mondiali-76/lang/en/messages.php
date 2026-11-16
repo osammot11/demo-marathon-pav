@@ -154,12 +154,12 @@ return [
 
     // Contact
     'contact_title' => 'Contact', 'contact_heading' => 'Talk to the organisers.',
-    'contact_text' => 'For questions about the race, write to or call Bici Club Ostuni. The details are those published on the federation listing.',
+    'contact_text' => 'For questions about the race, write to or call Bici Club Ostuni. The organisers’ official contact details will appear here.',
     'contact_org' => 'Organiser', 'contact_org_name' => 'Associazione Sportiva Dilettantistica Bici Club Ostuni',
-    'contact_phone' => 'Phone', 'contact_phone_value' => '333 669 7260',
-    'contact_email' => 'Email', 'contact_email_value' => 'vincenzomolendino@gmail.com',
+    'contact_phone' => 'Phone', 'contact_phone_value' => 'Official number to be confirmed',
+    'contact_email' => 'Email', 'contact_email_value' => 'Official email to be confirmed',
     'contact_meeting' => 'Meeting point', 'contact_meeting_value' => 'Viale Pola, Ostuni (BR)',
-    'contact_note' => 'Demo: these details must be confirmed with the organisers before any public use.',
+    'contact_note' => 'Demo: phone and email will be the official ones provided by the organisers.',
 
     // Privacy
     'privacy_title' => 'Privacy',

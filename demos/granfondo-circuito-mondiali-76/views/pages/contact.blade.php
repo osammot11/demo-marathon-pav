@@ -13,8 +13,8 @@
             <p class="eyebrow">{{ __($translationKey.'contact_org') }}</p>
             <h2>{{ __($translationKey.'contact_org_name') }}</h2>
             <dl class="fact-list">
-                <div><dt>{{ __($translationKey.'contact_phone') }}</dt><dd><a href="tel:+39{{ str_replace(' ', '', __($translationKey.'contact_phone_value')) }}">{{ __($translationKey.'contact_phone_value') }}</a></dd></div>
-                <div><dt>{{ __($translationKey.'contact_email') }}</dt><dd><a href="mailto:{{ __($translationKey.'contact_email_value') }}">{{ __($translationKey.'contact_email_value') }}</a></dd></div>
+                <div><dt>{{ __($translationKey.'contact_phone') }}</dt><dd>{{ __($translationKey.'contact_phone_value') }}</dd></div>
+                <div><dt>{{ __($translationKey.'contact_email') }}</dt><dd>{{ __($translationKey.'contact_email_value') }}</dd></div>
                 <div><dt>{{ __($translationKey.'contact_meeting') }}</dt><dd>{{ __($translationKey.'contact_meeting_value') }}</dd></div>
             </dl>
             <p class="small-note">{{ __($translationKey.'contact_note') }}</p>

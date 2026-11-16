@@ -19,6 +19,6 @@ organizzatore e recapiti.
 - Quota 35,00 € di prova (la scheda FCI non riporta quote). Nessuna commissione a carico dell'iscritto nella demo.
 - Età minima 17 anni (categoria JMT 17–18): da verificare con la regola federale.
 - Nessun certificato medico separato (la scheda non lo richiede); tipi di tessera: FCI e Consulta.
-- Recapiti organizzatore presi dalla scheda federale.
+- Recapiti organizzatore: segnaposto neutri, da sostituire con quelli ufficiali indicati dal Bici Club (niente recapiti personali sulle pagine pubbliche).
 - Un solo percorso (136 km): alcuni calendari riportano per il 2025 anche un percorso da 102 km.
 - Nessuna immagine: il sito ufficiale non offre logo o foto dell'evento utilizzabili; design solo CSS e tipografia.

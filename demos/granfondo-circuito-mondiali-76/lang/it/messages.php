@@ -154,12 +154,12 @@ return [
 
     // Contatti
     'contact_title' => 'Contatti', 'contact_heading' => 'Parla con l’organizzazione.',
-    'contact_text' => 'Per domande sulla gara scrivi o chiama il Bici Club Ostuni. I recapiti sono quelli pubblicati sulla scheda federale.',
+    'contact_text' => 'Per domande sulla gara scrivi o chiama il Bici Club Ostuni. Qui compariranno i recapiti ufficiali dell’organizzazione.',
     'contact_org' => 'Organizzatore', 'contact_org_name' => 'Associazione Sportiva Dilettantistica Bici Club Ostuni',
-    'contact_phone' => 'Telefono', 'contact_phone_value' => '333 669 7260',
-    'contact_email' => 'Email', 'contact_email_value' => 'vincenzomolendino@gmail.com',
+    'contact_phone' => 'Telefono', 'contact_phone_value' => 'Numero ufficiale da confermare',
+    'contact_email' => 'Email', 'contact_email_value' => 'Email ufficiale da confermare',
     'contact_meeting' => 'Ritrovo', 'contact_meeting_value' => 'Viale Pola, Ostuni (BR)',
-    'contact_note' => 'Demo: i recapiti vanno confermati con l’organizzazione prima di qualsiasi uso pubblico.',
+    'contact_note' => 'Demo: telefono ed email saranno quelli ufficiali indicati dall’organizzazione.',
 
     // Privacy
     'privacy_title' => 'Privacy',
