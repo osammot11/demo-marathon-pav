@@ -11,8 +11,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#0b1d24">
     <title>@yield('title', $title)</title>
-    <link rel="alternate" hreflang="it" href="{{ $locale === 'it' ? url()->current() : $switchUrl }}">
-    <link rel="alternate" hreflang="en" href="{{ $locale === 'en' ? url()->current() : $switchUrl }}">
+    <link rel="canonical" href="{{ $locale === 'en' ? url()->current() : $switchUrl }}">
+    @if($locale !== 'en')<meta http-equiv="refresh" content="0;url={{ $switchUrl }}">@endif
     <link rel="icon" type="image/svg+xml" href="{{ $registry->assetUrl($demo, 'favicon.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,9 +32,6 @@
             <a href="{{ $homeUrl }}#faq">{{ $t('nav_faq') }}</a>
         </nav>
         <div class="header-actions">
-            <div class="language-switch" aria-label="{{ $t('language_label') }}">
-                <a href="{{ $locale === 'it' ? url()->current() : $switchUrl }}" lang="it" hreflang="it" @if($locale === 'it') aria-current="page" @endif>IT</a><span>/</span><a href="{{ $locale === 'en' ? url()->current() : $switchUrl }}" lang="en" hreflang="en" @if($locale === 'en') aria-current="page" @endif>EN</a>
-            </div>
             <a class="button button-small" href="{{ $homeUrl }}#races">{{ $t('nav_register') }}</a>
             <button class="menu-toggle" type="button" aria-label="{{ $t('menu_open') }}" aria-expanded="false" aria-controls="mobile-nav" data-open-label="{{ $t('menu_open') }}" data-close-label="{{ $t('menu_close') }}"><span></span><span></span><span></span></button>
         </div>

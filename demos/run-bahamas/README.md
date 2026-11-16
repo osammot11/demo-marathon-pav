@@ -1,6 +1,6 @@
 # Run Bahamas 2027 — demo
 
-URL: `/run-bahamas/en` (versione da mostrare al cliente) e `/run-bahamas/` (italiano).
+URL: `/run-bahamas/en` (solo inglese). `/run-bahamas/` reindirizza a `/en` perché la piattaforma tratta l'URL senza `/en` come locale `it`.
 Solo pagamenti di prova Stripe; nessuna email in uscita. Non è il sito ufficiale (banner e footer lo dicono).
 
 ## Fonti
@@ -38,7 +38,7 @@ e pagina iscrizioni su RunSignup (prezzi letti a novembre 2026). Nessun brief su
 | Admin: dashboard, filtri, modifica iscritti, CSV, import, creazione manuale | RunSignup | Admin condiviso della piattaforma, filtrato per demo |
 | SEO: titoli, descrizioni, hreflang, dati strutturati | Titolo home "Home -", meta generica | Titolo e descrizione per pagina, hreflang IT/EN. Demo in noindex |
 | Accessibilità | n/d | Skip link, focus visibili, FAQ con details/summary, ARIA su menu |
-| Multilingua | Solo inglese | EN + IT |
+| Multilingua | Solo inglese | Solo inglese (evento locale) |
 
 ## Elenco migliorie rispetto al sito attuale
 1. **Iscrizione dentro il brand**: oggi "Register" porta a RunSignup; qui modulo, ordini di gruppo e conferma restano su Run Bahamas.

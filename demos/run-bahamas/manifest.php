@@ -7,7 +7,7 @@ $virtual = ['shuttle' => ['enabled' => false]];
 
 return [
     'name' => 'Run Bahamas 2027',
-    'locales' => ['it', 'en'],
+    'locales' => ['en'],
     'pages' => [
         'travel' => 'travel',
         'giving-back' => 'giving',
