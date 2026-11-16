@@ -82,6 +82,7 @@ return [
     'back_races' => 'All races', 'race_facts' => 'Race facts', 'race_when' => 'Date', 'race_when_value' => '31 January 2027',
     'race_fee_label' => 'Test entry fee', 'race_distance' => 'Distance', 'race_place' => 'Route', 'race_status' => 'Registration',
     'race_status_open' => 'Open · test checkout', 'race_status_soon' => 'Opening soon', 'race_details' => 'The race',
+    'race_virtual_title' => 'Run it anywhere', 'race_virtual_text' => 'Run the distance wherever you live, on your own schedule. There is no packet pick-up or shuttle for virtual entries, and registration closes Saturday 30 January.',
     'race_get_ready' => 'Get ready', 'race_ready_text' => 'Packet pick-up is Saturday 30 January from 10:00 to 19:00 at Breezes Hotel. Wear your chip bib on the front and arrive early for parking and gear check.',
     'other_title' => 'Looking for a different distance?', 'other_kicker' => 'More races', 'miles' => 'miles', 'km' => 'km',
     'relay_note' => 'The relay is a four-runner team: add four participants to the same order. In this demo the team fee is split evenly per runner.',
@@ -98,7 +99,7 @@ return [
     'reg_aside_note' => 'Shirt, bib, chip and finisher medal are included with every in-person entry.',
     'reg_shuttle_title' => 'Race-morning shuttle',
     'reg_shuttle_intro' => 'Round-trip buses run only between the Warwick Paradise Island and Goodman’s Bay.',
-    'reg_shuttle_yes' => 'Yes, I’m staying at the Warwick and want the shuttle', 'reg_shuttle_no' => 'No, I’ll make my own way to the start',
+    'reg_shuttle_yes' => 'Yes, I’d like the Warwick shuttle', 'reg_shuttle_no' => 'No, I’ll make my own way to the start',
     'form_labels' => ['first_name' => 'First name', 'last_name' => 'Last name', 'dob' => 'Date of birth', 'email' => 'Email', 'phone' => 'Phone (optional)', 'city' => 'City / Island', 'country' => 'Country'],
 
     // Checkout (shared views)
@@ -146,7 +147,7 @@ return [
         ['Race information buried in one long page', 'Pick-up, parking, shuttles, gear check and timing are one long wall of text. Here: a schedule, a short FAQ and a course section.'],
         ['Duplicated page addresses', 'The Half Marathon page sits at a “5k-copy-copy” address, which is bad for search and sharing. Clean, readable race URLs here.'],
         ['Generic page titles', 'The home page title is just “Home -”. Every page here has its own title and description.'],
-        ['No sponsor tiers or FAQ', 'The sponsors page shows tier headings and a form; there is no FAQ. Here: sponsor tiers, a volunteer call and a race-day FAQ.'],
+        ['No FAQ', 'The site has no FAQ, so the same questions get answered on a long page. Here: a short race-day FAQ with the eight questions runners ask most.'],
     ],
     'notes_next' => 'Next step: a short call to agree what the final site needs, such as USD checkout, the RunSignup connection or the official photo library.',
 

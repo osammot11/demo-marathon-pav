@@ -26,3 +26,18 @@
     setInterval(tick, 1000);
   }
 })();
+
+// Il modulo condiviso ripete i radio "navetta" in ogni pannello gara con lo stesso name: il browser li tratta come un unico
+// gruppo e può lasciare vuoto quello del pannello attivo. Qui garantiamo una scelta (default "Sì") per i pannelli attivi.
+(() => {
+  const form = document.querySelector('[data-demo-group]');
+  if (!form) return;
+  const ensure = () => form.querySelectorAll('[data-group-panel]:not([disabled])').forEach(panel => {
+    const radios = [...panel.querySelectorAll('input[type="radio"][name$="[shuttle_needed]"]')];
+    if (radios.length && !radios.some(radio => radio.checked)) radios[0].checked = true;
+  });
+  form.addEventListener('change', () => setTimeout(ensure, 0));
+  form.addEventListener('submit', ensure, true);
+  setTimeout(ensure, 0);
+  document.addEventListener('DOMContentLoaded', () => setTimeout(ensure, 0));
+})();

@@ -36,8 +36,8 @@
             <a class="button" href="{{ $regUrl }}">{{ $registrationOpen ? $t('race_enter') : $t('race_registration') }} →</a>
         </div>
         <aside class="detail-panel">
-            <p class="eyebrow dark">{{ $t('race_get_ready') }}</p>
-            <p>{{ $t('race_ready_text') }}</p>
+            <p class="eyebrow dark">{{ $isVirtual ? $t('race_virtual_title') : $t('race_get_ready') }}</p>@if($isVirtual)<p>{{ $t('race_virtual_text') }}</p>@endif
+            @unless($isVirtual)<p>{{ $t('race_ready_text') }}</p>@endunless
             <div class="registration-fact"><span>{{ $t('race_place') }}</span><strong>{{ $race['place'] }}</strong></div>
             <div class="registration-fact"><span>{{ $t('race_status') }}</span><strong>{{ $registrationOpen ? $t('race_status_open') : $t('race_status_soon') }}</strong></div>
             <img src="{{ $img('goodmans-bay.jpg') }}" width="930" height="620" loading="lazy" alt="Goodman’s Bay">

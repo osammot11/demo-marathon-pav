@@ -42,7 +42,7 @@ e pagina iscrizioni su RunSignup (prezzi letti a novembre 2026). Nessun brief su
 
 ## Elenco migliorie rispetto al sito attuale
 1. **Iscrizione dentro il brand**: oggi "Register" porta a RunSignup; qui modulo, ordini di gruppo e conferma restano su Run Bahamas.
-2. **Prezzi visibili sul sito** e SignUp fee non aggiunta in cima (oggi $4,50–$12,20 extra per iscrizione, mostrati solo a fine percorso).
+2. **Prezzi visibili sul sito** (oggi si scoprono solo uscendo su RunSignup) e quota gara senza SignUp fee: su RunSignup la fee è aggiunta sopra la quota gara ($4,50–$12,20 per iscrizione).
 3. **Contatori distanze funzionanti** e coerenti (ora 0 miglia, e Maratona assente).
 4. **Weekend di gara in una schermata**: timeline e FAQ al posto di una pagina di testo lunga.
 5. **URL e titoli puliti**: pagina Mezza Maratona su "5k-copy-copy", titolo home "Home -".
@@ -56,6 +56,7 @@ e pagina iscrizioni su RunSignup (prezzi letti a novembre 2026). Nessun brief su
 ## Segnaposto e limiti da verificare
 - **Valuta**: il checkout condiviso è solo in EUR; i prezzi mostrati (€) sono i numeri in USD di RunSignup. In produzione servirebbe USD/BSD: richiede una modifica al codice condiviso (non fatta).
 - **Prezzi**: quota gara "early" (prima del 1 gennaio 2027): 155 / 105 / 55 / 40 / 30 (student) e virtuali 105 / 155. Dopo l'1/1 salgono di 5. Staffetta: 170 per squadra, qui 42,50 a corridore (ipotesi, la piattaforma addebita per partecipante).
+- **Navetta**: il partial condiviso preseleziona "Sì" (default mantenuto) e ripete i radio in ogni pannello gara con lo stesso name, il che può lasciare il gruppo vuoto: `site.js` lo corregge solo lato demo. Da sistemare nella piattaforma condivisa.
 - **Staffetta**: il minimo di quattro corridori non è imposto dal modulo.
 - **Gara 5K**: la pagina RunSignup ha anche una "Student 5K" ($30), inclusa.
 - **Orari**: RunSignup indica 6:45 per 5K/10K, il sito dice "subito dopo" la partenza lunga. Usata la formula del sito.

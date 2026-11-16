@@ -51,7 +51,7 @@ return [
     'giving_text' => 'Una parte dei proventi dell’evento sostiene il Gennie Dean Caring and Sharing Cancer Support Group, a favore delle famiglie locali colpite dal cancro. La Colors of Courage 5K mette la sensibilizzazione sul cancro al centro della mattina di gara.',
     'giving_cta' => 'Sponsor e volontari',
 
-    'org_kicker' => '06 / Gli organizzatori', 'org_title' => 'Organizza Four Seasons Race Management',
+    'org_kicker' => '06 / Gli organizzatori', 'org_title' => 'Organizzato da Four Seasons Race Management',
     'org_text' => 'L’unica società del Paese con licenza per corse su strada e fun run-walk, guidata dal race director certificato RRCA Marcel “Bop” Major. Quattro anni di eventi propri, più le corse benefiche e aziendali nazionali che gestisce.',
 
     'faq_kicker' => '07 / Domande', 'faq_title' => 'Prima che tu chieda',
@@ -71,6 +71,7 @@ return [
     'back_races' => 'Tutte le gare', 'race_facts' => 'In breve', 'race_when' => 'Data', 'race_when_value' => '31 gennaio 2027',
     'race_fee_label' => 'Quota di prova', 'race_distance' => 'Distanza', 'race_place' => 'Percorso', 'race_status' => 'Iscrizioni',
     'race_status_open' => 'Aperte · checkout di prova', 'race_status_soon' => 'In arrivo', 'race_details' => 'La gara',
+    'race_virtual_title' => 'Corri da dove vuoi', 'race_virtual_text' => 'Corri la distanza dove vivi, con i tuoi tempi. Le iscrizioni virtuali non prevedono ritiro pettorali né navetta e chiudono sabato 30 gennaio.',
     'race_get_ready' => 'Preparati', 'race_ready_text' => 'Il ritiro pettorali è sabato 30 gennaio dalle 10:00 alle 19:00 al Breezes Hotel. Indossa il pettorale con chip davanti e arriva presto per parcheggio e deposito borse.',
     'other_title' => 'Cerchi un’altra distanza?', 'other_kicker' => 'Altre gare', 'miles' => 'miglia', 'km' => 'km',
     'relay_note' => 'La staffetta è una squadra da quattro: aggiungi quattro partecipanti allo stesso ordine. In questa demo la quota squadra è divisa in parti uguali per corridore.',
@@ -86,7 +87,7 @@ return [
     'reg_aside_note' => 'Maglia, pettorale, chip e medaglia da finisher sono inclusi in ogni iscrizione in presenza.',
     'reg_shuttle_title' => 'Navetta della mattina di gara',
     'reg_shuttle_intro' => 'Gli autobus di andata e ritorno collegano solo il Warwick Paradise Island e Goodman’s Bay.',
-    'reg_shuttle_yes' => 'Sì, alloggio al Warwick e voglio la navetta', 'reg_shuttle_no' => 'No, raggiungo la partenza in autonomia',
+    'reg_shuttle_yes' => 'Sì, voglio la navetta dal Warwick', 'reg_shuttle_no' => 'No, raggiungo la partenza in autonomia',
     'form_labels' => ['first_name' => 'Nome', 'last_name' => 'Cognome', 'dob' => 'Data di nascita', 'email' => 'Email', 'phone' => 'Telefono (facoltativo)', 'city' => 'Città / Isola', 'country' => 'Paese'],
 
     'checkout_order' => 'Ordine', 'checkout_payment_title' => 'Completa il pagamento',
@@ -132,7 +133,7 @@ return [
         ['Informazioni di gara in un’unica pagina lunga', 'Ritiro pettorali, parcheggio, navette, deposito borse e cronometraggio sono un muro di testo. Qui: programma, FAQ breve e sezione percorso.'],
         ['Indirizzi di pagina duplicati', 'La pagina della Mezza Maratona ha un indirizzo “5k-copy-copy”, dannoso per ricerca e condivisione. Qui URL puliti e leggibili.'],
         ['Titoli di pagina generici', 'Il titolo della home è solo “Home -”. Ogni pagina qui ha titolo e descrizione propri.'],
-        ['Nessun livello sponsor né FAQ', 'La pagina sponsor mostra i titoli dei livelli e un modulo; non c’è alcuna FAQ. Qui: livelli sponsor, appello ai volontari e FAQ di gara.'],
+        ['Nessuna FAQ', 'Il sito non ha una FAQ, quindi le stesse domande trovano risposta in una pagina lunga. Qui: una FAQ breve con le otto domande più frequenti.'],
     ],
     'notes_next' => 'Prossimo passo: una breve call per definire cosa serve al sito finale, come checkout in USD, collegamento a RunSignup o libreria foto ufficiale.',
 
